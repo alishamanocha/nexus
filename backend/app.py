@@ -1,20 +1,15 @@
-import json
-from pathlib import Path
+from fastapi import FastAPI, HTTPException
 
-from fastapi import FastAPI
-
-from backend.models.concepts import Concept
+from backend.models.courses import Course
+from backend.sample_data.calculus import course
 
 app = FastAPI()
 
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@app.get("/concepts")
-def concepts():
-    data = json.loads(Path("sample_data/calculus/concepts.json").read_text())
-    concepts = [Concept(**item) for item in data]
-    return {"concepts": concepts}
+@app.get("/courses/{course_id}")
+def get_course(course_id: str):
+    # The only sample data I have created is for calculus, so far
+    if course_id != "calculus":
+        raise HTTPException(status_code=404, detail="Course not found")
+    course_model = Course.model_validate(course)
+    return course_model

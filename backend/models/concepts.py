@@ -7,4 +7,5 @@ class Concept(BaseModel):
     id: str
     name: str
     description: str
+    course_id: str
     prerequisites: List[str]

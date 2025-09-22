@@ -7,9 +7,23 @@ from backend.models.concepts import Concept
 from backend.models.graph import ConceptEdge, ConceptNode, CourseGraph
 
 valid_concepts: List[Concept] = [
-    Concept(id="A", name="A", description="concept A", prerequisites=[]),
-    Concept(id="B", name="B", description="concept B", prerequisites=["A"]),
-    Concept(id="C", name="C", description="concept C", prerequisites=["A", "B"]),
+    Concept(
+        id="A", name="A", course_id="course", description="concept A", prerequisites=[]
+    ),
+    Concept(
+        id="B",
+        name="B",
+        course_id="course",
+        description="concept B",
+        prerequisites=["A"],
+    ),
+    Concept(
+        id="C",
+        name="C",
+        course_id="course",
+        description="concept C",
+        prerequisites=["A", "B"],
+    ),
 ]
 
 
@@ -27,7 +41,13 @@ def test_build_graph_creates_nodes_and_edges():
 
 def test_build_graph_raises_on_missing_prereq():
     concepts = [
-        Concept(id="A", name="A", description="concept A", prerequisites=["Z"]),
+        Concept(
+            id="A",
+            name="A",
+            course_id="course",
+            description="concept A",
+            prerequisites=["Z"],
+        ),
     ]
 
     with pytest.raises(ValueError, match="Prerequisite Z not found"):

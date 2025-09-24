@@ -1,27 +1,42 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import cytoscape from "cytoscape";
+import type { GraphResponse, NodeData, LinkData } from "@/types/graph";
 
-export default function Graph() {
+export default function Graph({ courseId }: { courseId: string }) {
     const cyRef = useRef<HTMLDivElement>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!cyRef.current) return;
+        let cy: cytoscape.Core | undefined;
 
-        fetch("http://localhost:8000/courses/calculus1/graph")
-            .then((r) => r.json())
-            .then((data) => {
+        fetch(`http://localhost:8000/courses/${courseId}/graph`)
+            .then(async (r) => {
+                if (!r.ok) {
+                    let errMsg = `${r.status} - ${r.statusText}`;
+                    try {
+                        const errData = await r.json();
+                        if (errData?.detail) {
+                            errMsg = errData.detail;
+                        }
+                    } catch {}
+                    throw new Error(errMsg);
+                }
+                return r.json();
+            })
+            .then((data: GraphResponse) => {
                 const elements = [
-                    ...data.nodes.map((n: any) => ({
+                    ...data.nodes.map((n: NodeData) => ({
                         data: { id: n.id, label: n.concept.name },
                     })),
-                    ...data.links.map((l: any) => ({
+                    ...data.links.map((l: LinkData) => ({
                         data: { source: l.source, target: l.target },
                     })),
                 ];
 
-                const cy = cytoscape({
+                cy = cytoscape({
                     container: cyRef.current,
                     elements,
                     style: [
@@ -53,12 +68,27 @@ export default function Graph() {
                             },
                         },
                     ],
-                    layout: { name: "circle" },
+                    layout: { name: "breadthfirst", directed: true, padding: 10 },
                 });
 
                 cy.fit();
+            })
+            .catch((err) => {
+                setError(err.message);
             });
-    }, []);
+
+        return () => {
+            cy?.destroy();
+        };
+    }, [courseId]);
+
+    if (error) {
+        return (
+            <div className="p-4 text-red-600 border border-red-400 bg-red-50 rounded">
+                {error}
+            </div>
+        );
+    }
 
     return (
         <div

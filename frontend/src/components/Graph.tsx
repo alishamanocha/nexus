@@ -6,6 +6,7 @@ import type { GraphResponse, NodeData, LinkData } from "@/types/graph";
 
 export default function Graph({ courseId }: { courseId: string }) {
     const cyRef = useRef<HTMLDivElement>(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -72,9 +73,11 @@ export default function Graph({ courseId }: { courseId: string }) {
                 });
 
                 cy.fit();
+                setLoading(false);
             })
             .catch((err) => {
                 setError(err.message);
+                setLoading(false);
             });
 
         return () => {
@@ -82,18 +85,21 @@ export default function Graph({ courseId }: { courseId: string }) {
         };
     }, [courseId]);
 
-    if (error) {
-        return (
-            <div className="p-4 text-red-600 border border-red-400 bg-red-50 rounded">
-                {error}
-            </div>
-        );
-    }
-
     return (
-        <div
-            ref={cyRef}
-            className="w-full h-200 border border-blue-500"
-        />
+        <div className="relative w-full h-200 border border-blue-500">
+            <div ref={cyRef} className="absolute inset-0 w-full h-full" />
+
+            {loading && !error && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+                    <span className="text-gray-600">Loading graph...</span>
+                </div>
+            )}
+
+            {error && (
+                <div className="absolute inset-0 flex items-center justify-center p-4 text-red-600 border border-red-400 bg-red-50 rounded">
+                    {error}
+                </div>
+            )}
+        </div>
     );
 }

@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -26,6 +28,11 @@ app.add_middleware(
 CONCEPTS = [Concept.model_validate(c) for c in concepts]
 COURSES = [Course.model_validate(c) for c in courses]
 CONCEPT_GRAPH = build_graph(CONCEPTS)
+
+
+@app.get("/courses")
+def get_courses() -> List[Course]:
+    return COURSES
 
 
 @app.get("/courses/{course_id}")

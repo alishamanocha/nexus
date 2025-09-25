@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import CoursesList from "@/components/CoursesList";
 import type { Course } from "@/types/course";
+import PageLayout from "@/components/PageLayout";
 
 export default function CoursesPage() {
     const [courses, setCourses] = useState<Course[]>([]);
@@ -33,9 +34,8 @@ export default function CoursesPage() {
     )
 
     return (
-        <main className="p-6 max-w-2xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Courses</h1>
+        <PageLayout title="Courses">
             <CoursesList courses={courses} />
-        </main>
+        </PageLayout>
     );
 }

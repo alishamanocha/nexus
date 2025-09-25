@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import cytoscape from "cytoscape";
+import dagre from "cytoscape-dagre";
 import type { GraphResponse, NodeData, LinkData } from "@/types/graph";
+
+cytoscape.use(dagre);
 
 export default function Graph({ courseId }: { courseId: string }) {
     const cyRef = useRef<HTMLDivElement>(null);
@@ -69,7 +72,7 @@ export default function Graph({ courseId }: { courseId: string }) {
                             },
                         },
                     ],
-                    layout: { name: "breadthfirst", directed: true, padding: 10 },
+                    layout: { name: "dagre", rankDir: "TB", nodeSep: 50, rankSep: 100, edgeSep: 10, },
                 });
 
                 cy.fit();

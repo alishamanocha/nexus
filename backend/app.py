@@ -56,3 +56,12 @@ def get_course_graph(course_id: str) -> CourseGraph:
         raise HTTPException(status_code=404, detail="No concepts found for this course")
 
     return CourseGraph.from_networkx(course_id, subG)
+
+
+@app.get("/concepts/{concept_id}")
+def get_concept(concept_id: str) -> Concept:
+    """Get information on a concept."""
+    concept = next((c for c in CONCEPTS if c.id == concept_id), None)
+    if not concept:
+        raise HTTPException(status_code=404, detail="Concept not found")
+    return concept

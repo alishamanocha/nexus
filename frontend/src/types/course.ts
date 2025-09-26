@@ -4,6 +4,7 @@ export interface Concept {
     description: string;
     course_id: string;
     prerequisites: string[];
+    content: string;
 }
 
 export interface Course {

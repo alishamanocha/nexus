@@ -9,3 +9,4 @@ class Concept(BaseModel):
     description: str
     course_id: str
     prerequisites: List[str]
+    content: str

@@ -5,6 +5,7 @@ concepts = [
         "description": "Understanding the behavior of functions as inputs approach a value.",
         "prerequisites": [],
         "course_id": "calculus1",
+        "content": "A limit tells you what a function approaches as you approach a certain input value!",
     },
     {
         "id": "continuity",
@@ -12,6 +13,7 @@ concepts = [
         "description": "Determining whether a function has any breaks, jumps, or holes.",
         "prerequisites": ["limits"],
         "course_id": "calculus1",
+        "content": "There are three conditions for continuity of f(x) at x=a: (1) f(a) is defined, (2) lim_{x->a} f(x) exists, and (3) f(a) = lim_{x->a} f(x).",
     },
     {
         "id": "derivatives",
@@ -19,6 +21,7 @@ concepts = [
         "description": "The instantaneous rate of change of a function at a point.",
         "prerequisites": ["limits"],
         "course_id": "calculus1",
+        "content": "A derivative measures the rate of change of a function.",
     },
     {
         "id": "chain_rule",
@@ -26,6 +29,7 @@ concepts = [
         "description": "Rule for differentiating compositions of functions.",
         "prerequisites": ["derivatives"],
         "course_id": "calculus1",
+        "content": "The derivative of f(g(x)) is f'(g(x))*g'(x).",
     },
     {
         "id": "implicit_diff",
@@ -33,6 +37,7 @@ concepts = [
         "description": "Differentiating equations not explicitly solved for one variable.",
         "prerequisites": ["derivatives", "chain_rule"],
         "course_id": "calculus1",
+        "content": "For example, x^2+y^2=4 -> d/dx[x^2+y^2]=d/dx[4] -> 2x+2y*dy/dx=0 -> dy/dx=-x/y.",
     },
     {
         "id": "related_rates",
@@ -40,6 +45,7 @@ concepts = [
         "description": "Applying derivatives to find rates of change in related quantities.",
         "prerequisites": ["derivatives", "implicit_diff"],
         "course_id": "calculus1",
+        "content": "We can use implicit differentiation to determine the rate of change of the volume of a sphere based on the rate of change of the radius, for example.",
     },
     {
         "id": "integrals",
@@ -47,6 +53,7 @@ concepts = [
         "description": "Calculating the accumulation of quantities and areas under curves.",
         "prerequisites": ["derivatives"],
         "course_id": "calculus1",
+        "content": "The integral, which physically represents the area under a curve, is the inverse operation to the derivative.",
     },
     {
         "id": "fundamental_theorem",
@@ -54,6 +61,7 @@ concepts = [
         "description": "Connecting derivatives and integrals as inverse processes.",
         "prerequisites": ["derivatives", "integrals"],
         "course_id": "calculus1",
+        "content": "Because differentiation and integration are inverse operations, they 'undo' each other.",
     },
 ]
 

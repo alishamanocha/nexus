@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import cytoscape from "cytoscape";
 import dagre from "cytoscape-dagre";
@@ -8,6 +9,8 @@ import type { GraphResponse, NodeData, LinkData } from "@/types/graph";
 cytoscape.use(dagre);
 
 export default function Graph({ courseId }: { courseId: string }) {
+    const router = useRouter();
+
     const cyRef = useRef<HTMLDivElement>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -75,6 +78,11 @@ export default function Graph({ courseId }: { courseId: string }) {
                     layout: { name: "dagre", rankDir: "TB", nodeSep: 50, rankSep: 100, edgeSep: 10, },
                 });
 
+                cy.on("tap", "node", (evt) => {
+                    const nodeId = evt.target.id();
+                    openConceptPage(nodeId);
+                });
+
                 cy.fit();
                 setLoading(false);
             })
@@ -87,6 +95,10 @@ export default function Graph({ courseId }: { courseId: string }) {
             cy?.destroy();
         };
     }, [courseId]);
+
+    function openConceptPage(conceptId: string) {
+        router.push(`/courses/${courseId}/concepts/${conceptId}`);
+    }
 
     return (
         <div className="relative w-full h-200 border border-blue-500">

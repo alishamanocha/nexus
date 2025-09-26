@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import CoursesList from "@/components/CoursesList";
@@ -26,12 +26,13 @@ export default function CoursesPage() {
             });
     }, []);
 
-    if (loading) return <div className="p-4">Loading courses...</div>
-    if (error) return (
-        <div className="p-4 text-red-600">
-            Failed to load courses: {error}
-        </div>
-    )
+    if (loading) return <div className="p-4">Loading courses...</div>;
+    if (error)
+        return (
+            <div className="p-4 text-red-600">
+                Failed to load courses: {error}
+            </div>
+        );
 
     return (
         <PageLayout title="Courses">

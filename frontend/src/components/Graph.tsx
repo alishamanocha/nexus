@@ -51,14 +51,14 @@ export default function Graph({ courseId }: { courseId: string }) {
                             selector: "node",
                             style: {
                                 "background-color": "#0074D9",
-                                "shape": "round-rectangle",
-                                "label": "data(label)",
-                                "color": "white",
+                                shape: "round-rectangle",
+                                label: "data(label)",
+                                color: "white",
                                 "text-valign": "center",
                                 "text-halign": "center",
-                                "padding": "10px",
-                                "width": "label",
-                                "height": "label",
+                                padding: "10px",
+                                width: "label",
+                                height: "label",
                                 "font-size": 16,
                                 "text-wrap": "wrap",
                                 "text-max-width": 120,
@@ -75,12 +75,18 @@ export default function Graph({ courseId }: { courseId: string }) {
                             },
                         },
                     ],
-                    layout: { name: "dagre", rankDir: "TB", nodeSep: 50, rankSep: 100, edgeSep: 10, },
+                    layout: {
+                        name: "dagre",
+                        rankDir: "TB",
+                        nodeSep: 50,
+                        rankSep: 100,
+                        edgeSep: 10,
+                    },
                 });
 
                 cy.on("tap", "node", (evt) => {
                     const nodeId = evt.target.id();
-                    openConceptPage(nodeId);
+                    router.push(`/courses/${courseId}/concepts/${nodeId}`);
                 });
 
                 cy.fit();
@@ -94,11 +100,7 @@ export default function Graph({ courseId }: { courseId: string }) {
         return () => {
             cy?.destroy();
         };
-    }, [courseId]);
-
-    function openConceptPage(conceptId: string) {
-        router.push(`/courses/${courseId}/concepts/${conceptId}`);
-    }
+    }, [courseId, router]);
 
     return (
         <div className="relative w-full h-200 border border-blue-500">

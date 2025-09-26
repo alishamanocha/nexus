@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Graph from "@/components/Graph";
 import { useParams } from "next/navigation";
@@ -25,19 +25,24 @@ export default function CoursePage() {
     }, [courseId]);
 
     if (typeof courseId !== "string") return null;
-    if (loading) return <div className="p-4">Loading courses...</div>
-    if (error) return (
-        <div className="p-4 text-red-600">
-            Failed to load course: {error}
-        </div>
-    )
+    if (loading) return <div className="p-4">Loading courses...</div>;
+    if (error)
+        return (
+            <div className="p-4 text-red-600">
+                Failed to load course: {error}
+            </div>
+        );
 
     return (
         <main className="flex flex-col min-h-screen bg-gray-100">
             <header className="p-6 border-b bg-white shadow-sm">
-                <h1 className="text-3xl font-bold text-black">{course?.name}</h1>
+                <h1 className="text-3xl font-bold text-black">
+                    {course?.name}
+                </h1>
                 {course?.description && (
-                    <p className="text-lg text-gray-700 mt-2">{course.description}</p>
+                    <p className="text-lg text-gray-700 mt-2">
+                        {course.description}
+                    </p>
                 )}
                 {course?.concepts?.length > 0 && (
                     <ul className="flex flex-wrap gap-2 mt-4">

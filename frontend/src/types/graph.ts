@@ -1,6 +1,6 @@
 export interface NodeData {
     id: string;
-    concept: { name: string};
+    concept: { name: string };
 }
 
 export interface LinkData {

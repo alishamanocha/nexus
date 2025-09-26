@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,22 +24,29 @@ export default function ConceptPage() {
     }, [conceptId]);
 
     if (typeof conceptId !== "string") return null;
-    if (loading) return <div className="p-4">Loading concept...</div>
-    if (error) return (
-        <div className="p-4 text-red-600">
-            Failed to load concept: {error}
-        </div>
-    )
+    if (loading) return <div className="p-4">Loading concept...</div>;
+    if (error)
+        return (
+            <div className="p-4 text-red-600">
+                Failed to load concept: {error}
+            </div>
+        );
 
     return (
         <main className="flex flex-col min-h-screen bg-gray-100">
             <header className="p-6 border-b bg-white shadow-sm">
-                <h1 className="text-3xl font-bold text-black">{concept?.name}</h1>
+                <h1 className="text-3xl font-bold text-black">
+                    {concept?.name}
+                </h1>
                 {concept?.description && (
-                    <p className="text-lg text-gray-700 mt-2">{concept.description}</p>
+                    <p className="text-lg text-gray-700 mt-2">
+                        {concept.description}
+                    </p>
                 )}
                 {concept?.content && (
-                    <p className="text-lg text-gray-700 mt-2">{concept.content}</p>
+                    <p className="text-lg text-gray-700 mt-2">
+                        {concept.content}
+                    </p>
                 )}
             </header>
         </main>

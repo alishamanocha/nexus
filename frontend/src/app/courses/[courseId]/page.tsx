@@ -40,7 +40,7 @@ export default function CoursePage() {
                 <Breadcrumb
                     items={[
                         { href: "/courses", label: "Courses" },
-                        { label: courseId },
+                        { label: course?.name },
                     ]}
                 />
                 <h1 className="text-3xl font-bold text-black">

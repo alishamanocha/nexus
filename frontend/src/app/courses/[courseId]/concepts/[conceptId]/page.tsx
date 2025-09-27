@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { Concept } from "@/types/course";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function ConceptPage() {
     const { conceptId } = useParams();
@@ -35,11 +36,24 @@ export default function ConceptPage() {
     return (
         <main className="flex flex-col min-h-screen bg-gray-100">
             <header className="p-6 border-b bg-white shadow-sm">
+                {concept?.course_id && (
+                    <Breadcrumb
+                        items={[
+                            { href: "/courses", label: "Courses" },
+                            {
+                                href: `/courses/${concept.course_id}`,
+                                label: concept.course_id,
+                            },
+                            { label: concept.name },
+                        ]}
+                    />
+                )}
+
                 <h1 className="text-3xl font-bold text-black">
                     {concept?.name}
                 </h1>
                 {concept?.description && (
-                    <p className="text-lg text-gray-700 mt-2">
+                    <p className="text-lg text-gray-700 italic mt-2">
                         {concept.description}
                     </p>
                 )}

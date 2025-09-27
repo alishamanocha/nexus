@@ -4,6 +4,7 @@ import Graph from "@/components/Graph";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { Course } from "@/types/course";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function CoursePage() {
     const { courseId } = useParams();
@@ -36,6 +37,12 @@ export default function CoursePage() {
     return (
         <main className="flex flex-col min-h-screen bg-gray-100">
             <header className="p-6 border-b bg-white shadow-sm">
+                <Breadcrumb
+                    items={[
+                        { href: "/courses", label: "Courses" },
+                        { label: courseId },
+                    ]}
+                />
                 <h1 className="text-3xl font-bold text-black">
                     {course?.name}
                 </h1>

@@ -44,8 +44,11 @@ ignore_missing_imports = true
 line-length = 88
 
 [tool.ruff.lint]
-select = ["ALL"]
-ignore = ["E203", "E501"]
+select = ["E", "F", "W", "D", "B", "I"]
+ignore = ["E203", "E501", "D203", "D213", "B008"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,3 +1,5 @@
+"""Sample data to serve as a replacement for a database during early development."""
+
 from __future__ import annotations
 
 from uuid import uuid4

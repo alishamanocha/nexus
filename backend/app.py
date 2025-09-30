@@ -1,3 +1,5 @@
+"""Main FastAPI application entrypoint."""
+
 from datetime import timedelta
 from uuid import uuid4
 
@@ -6,15 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
-from backend.auth import (
-    ACCESS_TOKEN_EXPIRE_MINUTES,
-    authenticate_user,
-    create_access_token,
-    get_current_user,
-    get_password_hash,
-    set_access_token_cookie,
-    validate_username,
-)
+from backend.auth import (ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user,
+                          create_access_token, get_current_user,
+                          get_password_hash, set_access_token_cookie,
+                          validate_username)
 from backend.graph.builder import build_graph
 from backend.graph.utils import get_course_subgraph
 from backend.models.concepts import Concept
@@ -45,6 +42,20 @@ CONCEPT_GRAPH = build_graph(CONCEPTS)
 
 @app.post("/signup")
 def signup(user: UserCreate) -> JSONResponse:
+    """Register a new user and issue an access token.
+
+    This endpoint validates the username, hashes the password, stores the user in the database, and returns a response with a session cookie set.
+
+    Args:
+        user (UserCreate): The user signup data including username, full name, email, and password.
+
+    Returns:
+        JSONResponse: A response indicating success, with an access token set as a secure cookie.
+
+    Raises:
+        HTTPException: If the username is already registered.
+
+    """
     if not validate_username(user.username):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -71,6 +82,20 @@ def signup(user: UserCreate) -> JSONResponse:
 
 @app.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()) -> JSONResponse:
+    """Log in an existing user and issue an access token.
+
+    This endpoint verifies the provided username and password. If valid, it creates a new access token, sets it as a secure cookie, and returns a success response.
+
+    Args:
+        form_data (OAuth2PasswordRequestForm): The login form data containing username and password.
+
+    Returns:
+        JSONResponse: A response indicating success, with an access token set as a secure cookie.
+
+    Raises:
+        HTTPException: If authentication fails due to invalid username or password.
+
+    """
     user = authenticate_user(fake_users_db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -92,6 +117,11 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()) -> JSONRespons
 
 @app.post("/logout")
 def logout() -> JSONResponse:
+    """Log out a user by clearing the access token cookie.
+
+    Returns:
+        JSONResponse: A response confirming that the user has been logged out.
+    """
     response = JSONResponse({"message": "Logged out"})
     response.delete_cookie("access_token")
     return response
@@ -99,6 +129,14 @@ def logout() -> JSONResponse:
 
 @app.get("/courses")
 def get_courses(user: User = Depends(get_current_user)) -> list[Course]:
+    """Retrieve the list of available courses.
+
+    Args:
+        user (User): The currently authenticated user, injected via dependency.
+
+    Returns:
+        list[Course]: A list of all available courses.
+    """
     return COURSES
 
 
@@ -107,7 +145,18 @@ def get_course(
     course_id: str,
     current_user: User = Depends(get_current_user),
 ) -> Course:
-    """Get course information given a course id."""
+    """Retrieve course information by ID.
+
+    Args:
+        course_id (str): The ID of the course to retrieve.
+        current_user (User): The currently authenticated user, injected via dependency.
+
+    Returns:
+        Course: The course object containing course details.
+
+    Raises:
+        HTTPException: If the course does not exist.
+    """
     course = next((c for c in COURSES if c.id == course_id), None)
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -119,7 +168,18 @@ def get_course_graph(
     course_id: str,
     current_user: User = Depends(get_current_user),
 ) -> CourseGraph:
-    """Get a course graph given a course id."""
+    """Retrieve the concept graph for a course by ID.
+
+    Args:
+        course_id (str): The ID of the course for which to retrieve the graph.
+        current_user (User): The currently authenticated user, injected via dependency.
+
+    Returns:
+        CourseGraph: A graph object representing all concepts and their relationships within the course.
+
+    Raises:
+        HTTPException: If the course does not exist or has no concepts.
+    """
     course = next((c for c in COURSES if c.id == course_id), None)
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")

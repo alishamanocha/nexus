@@ -8,4 +8,4 @@ def get_course_subgraph(G: nx.DiGraph, course_id: str) -> nx.DiGraph:
     nodes = [
         n for n, attr in G.nodes(data=True) if attr["concept"].course_id == course_id
     ]
-    return cast(nx.DiGraph, G.subgraph(nodes).copy())
+    return cast("nx.DiGraph", G.subgraph(nodes).copy())

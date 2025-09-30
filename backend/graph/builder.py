@@ -1,11 +1,9 @@
-from typing import List
-
 import networkx as nx
 
 from backend.models.concepts import Concept
 
 
-def build_graph(concepts: List[Concept]) -> nx.DiGraph:
+def build_graph(concepts: list[Concept]) -> nx.DiGraph:
     """Build a DAG of concepts, where nodes represent concepts and edges represent prerequisite relationships."""
     G: nx.DiGraph = nx.DiGraph()
 
@@ -18,7 +16,7 @@ def build_graph(concepts: List[Concept]) -> nx.DiGraph:
                 G.add_edge(prereq_id, c.id)
             else:
                 raise ValueError(
-                    f"Prerequisite {prereq_id} not found for concept {c.id}"
+                    f"Prerequisite {prereq_id} not found for concept {c.id}",
                 )
 
     return G

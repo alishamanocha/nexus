@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel
 
 
@@ -8,5 +6,5 @@ class Concept(BaseModel):
     name: str
     description: str
     course_id: str
-    prerequisites: List[str]
+    prerequisites: list[str]
     content: str

@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from uuid import uuid4
+
 concepts = [
     {
         "id": "limits",
@@ -77,5 +81,15 @@ courses = [
         "name": "Precalculus",
         "description": "A basic precalculus course.",
         "concepts": [],
+    },
+]
+
+fake_users_db: list[dict[str, str | None]] = [
+    {
+        "id": str(uuid4()),
+        "username": "johndoe",
+        "full_name": "John Doe",
+        "email": "johndoe@example.com",
+        "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$wagCPXjifgvUFBzq4hqe3w$CYaIb8sB+wtD+Vu/P4uod1+Qof8h+1g7bbDlBID48Rc",
     },
 ]

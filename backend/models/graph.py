@@ -1,5 +1,3 @@
-from typing import List
-
 import networkx as nx
 from pydantic import BaseModel
 
@@ -18,8 +16,8 @@ class ConceptEdge(BaseModel):
 
 class CourseGraph(BaseModel):
     course_id: str
-    nodes: List[ConceptNode]
-    links: List[ConceptEdge]
+    nodes: list[ConceptNode]
+    links: list[ConceptEdge]
 
     @classmethod
     def from_networkx(cls, course_id: str, G: nx.DiGraph) -> "CourseGraph":

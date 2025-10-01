@@ -12,7 +12,9 @@ export default function ConceptPage() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8000/concepts/${conceptId}`)
+        fetch(`http://localhost:8000/concepts/${conceptId}`, {
+            credentials: "include",
+        })
             .then((r) => r.json())
             .then((data: Concept) => {
                 setConcept(data);

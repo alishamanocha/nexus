@@ -11,7 +11,9 @@ export default function CoursesPage() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch("http://localhost:8000/courses")
+        fetch("http://localhost:8000/courses", {
+            credentials: "include",
+        })
             .then((r) => {
                 if (!r.ok) throw new Error(`${r.status} - ${r.statusText}`);
                 return r.json();

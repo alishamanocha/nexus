@@ -14,9 +14,6 @@ export default function Navbar() {
                     <Link href="/courses" className="hover:text-gray-200">
                         Courses
                     </Link>
-                    <Link href="/about" className="hover:text-gray-200">
-                        About
-                    </Link>
                     <Link href="/profile" className="hover:text-gray-200">
                         Profile
                     </Link>

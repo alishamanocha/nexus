@@ -1,0 +1,84 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function LoginPage() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+
+        const formData = new URLSearchParams();
+        formData.append("username", username);
+        formData.append("password", password);
+
+        try {
+            const res = await fetch("http://localhost:8000/login", {
+                method: "POST",
+                body: formData,
+                credentials: "include",
+            });
+
+            if (res.ok) {
+                router.push("/");
+            } else {
+                const data = await res.json();
+                setError(data.detail || "Login failed");
+            }
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    return (
+        <div className="flex min-h-screen items-center justify-center bg-gray-50">
+            <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+                <h1 className="text-2xl font-bold mb-6 text-center">Sign in</h1>
+
+                {error && (
+                    <p className="mb-4 text-red-500 text-center">{error}</p>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-gray-700 mb-1">
+                            Username
+                        </label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-700 mb-1">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+                    >
+                        Sign In
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}

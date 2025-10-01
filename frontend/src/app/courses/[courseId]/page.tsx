@@ -13,7 +13,9 @@ export default function CoursePage() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8000/courses/${courseId}`)
+        fetch(`http://localhost:8000/courses/${courseId}`, {
+            credentials: "include",
+        })
             .then((r) => r.json())
             .then((data: Course) => {
                 setCourse(data);

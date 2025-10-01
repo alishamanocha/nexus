@@ -19,7 +19,9 @@ export default function Graph({ courseId }: { courseId: string }) {
         if (!cyRef.current) return;
         let cy: cytoscape.Core | undefined;
 
-        fetch(`http://localhost:8000/courses/${courseId}/graph`)
+        fetch(`http://localhost:8000/courses/${courseId}/graph`, {
+            credentials: "include",
+        })
             .then(async (r) => {
                 if (!r.ok) {
                     let errMsg = `${r.status} - ${r.statusText}`;

@@ -1,9 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/context/UserContext";
 
 export default function LogoutButton() {
     const router = useRouter();
+    const { setUser } = useCurrentUser();
 
     const handleLogout = async () => {
         try {
@@ -13,6 +15,7 @@ export default function LogoutButton() {
             });
 
             if (res.ok) {
+                setUser(null);
                 router.push("/login");
             } else {
                 console.error("Logout failed");

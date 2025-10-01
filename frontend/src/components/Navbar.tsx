@@ -1,7 +1,11 @@
+"use client";
 import Link from "next/link";
 import LogoutButton from "@/components/LogoutButton";
+import { useCurrentUser } from "@/context/UserContext";
 
 export default function Navbar() {
+    const { user, loading } = useCurrentUser();
+
     return (
         <nav className="fixed top-0 left-0 right-0 bg-blue-500 text-white px-6 py-3 shadow-md">
             <div className="mx-auto flex items-center justify-between">
@@ -18,7 +22,15 @@ export default function Navbar() {
                     <Link href="/profile" className="hover:text-gray-200">
                         Profile
                     </Link>
-                    <LogoutButton />
+
+                    {!loading &&
+                        (user ? (
+                            <LogoutButton />
+                        ) : (
+                            <Link href="/login" className="hover:text-gray-200">
+                                Login
+                            </Link>
+                        ))}
                 </div>
             </div>
         </nav>

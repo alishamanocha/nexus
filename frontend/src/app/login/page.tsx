@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/context/UserContext";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
+
+    const { refreshUser } = useCurrentUser();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,6 +28,7 @@ export default function LoginPage() {
             });
 
             if (res.ok) {
+                await refreshUser();
                 router.push("/");
             } else {
                 const data = await res.json();

@@ -127,6 +127,19 @@ def logout() -> JSONResponse:
     return response
 
 
+@app.get("/me")
+def me(current_user: User = Depends(get_current_user)) -> User:
+    """Retrieve user info for currently logged in user.
+
+    Args:
+        current_user (User): The currently authenticated user, injected via dependency.
+
+    Returns:
+        User: Information on the currently logged in user.
+    """
+    return User(**current_user.dict())
+
+
 @app.get("/courses")
 def get_courses(user: User = Depends(get_current_user)) -> list[Course]:
     """Retrieve the list of available courses.

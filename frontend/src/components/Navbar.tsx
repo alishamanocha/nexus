@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogoutButton from "@/components/LogoutButton";
 
 export default function Navbar() {
     return (
@@ -17,6 +18,7 @@ export default function Navbar() {
                     <Link href="/profile" className="hover:text-gray-200">
                         Profile
                     </Link>
+                    <LogoutButton />
                 </div>
             </div>
         </nav>

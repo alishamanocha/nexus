@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/context/UserContext";
 
-export default function LoginPage() {
+export default function SignupPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [fullName, setFullName] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -19,14 +20,18 @@ export default function LoginPage() {
         setError("");
         setLoading(true);
 
-        const formData = new URLSearchParams();
-        formData.append("username", username);
-        formData.append("password", password);
-
         try {
-            const res = await fetch("http://localhost:8000/login", {
+            const res = await fetch("http://localhost:8000/signup", {
                 method: "POST",
-                body: formData,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    full_name: fullName,
+                    password,
+                }),
                 credentials: "include",
             });
 
@@ -36,7 +41,7 @@ export default function LoginPage() {
                 router.push("/");
             } else {
                 const data = await res.json();
-                setError(data.detail || "Login failed");
+                setError(JSON.stringify(data.detail) || "Signup failed");
                 setLoading(false);
             }
         } catch (err) {
@@ -48,7 +53,7 @@ export default function LoginPage() {
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50">
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-                <h1 className="text-2xl font-bold mb-6 text-center">Sign in</h1>
+                <h1 className="text-2xl font-bold mb-6 text-center">Sign up</h1>
 
                 {error && (
                     <p className="mb-4 text-red-500 text-center">{error}</p>
@@ -63,6 +68,32 @@ export default function LoginPage() {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            required
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-700 mb-1">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-700 mb-1">
+                            Full Name
+                        </label>
+                        <input
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
                             required
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -90,19 +121,9 @@ export default function LoginPage() {
                                 : "bg-blue-600 hover:bg-blue-700 text-white"
                         }`}
                     >
-                        {loading ? "Signing in..." : "Sign In"}
+                        {loading ? "Signing up..." : "Sign Up"}
                     </button>
                 </form>
-
-                <p className="mt-4 text-center text-gray-600 text-sm">
-                    Don't have an account?{" "}
-                    <Link
-                        href="/signup"
-                        className="text-blue-600 hover:underline font-medium"
-                    >
-                        Sign up
-                    </Link>
-                </p>
             </div>
         </div>
     );
